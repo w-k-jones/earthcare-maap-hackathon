@@ -15,7 +15,37 @@ Check out our Science and Hacking Plan for more details
 
 The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Friday afternoon, April 24th. Lunch is not hosted, but available at ESRIN's canteen daily between 12.00 and 14.00. Snacks and coffee can be bought at the bar, open from 08.00 to 16.30. 
 
-**Monday**, April 20
+**Monday, April 20**  - Please arrive by **13:45** at ESRIN.
+
+| Time | Event | Room |
+| --- | --- | --- |
+| 12:30 | **Registration**<br>- Lunch (optional) | Cantine |
+| 14:00 | **Opening Session**<br>- Welcome<br>- Logistics<br>- Group distribution | Magellan |
+| 17:00 | Aperitivo | |
+
+**Tuesday, April 21**  
+
+
+| Time | Event | Room |
+| --- | --- | --- |
+
+
+**Wednesday, April 22**  
+
+
+| Time | Event | Room |
+| --- | --- | --- |
+
+**Thursday, April 23**  
+
+| Time | Event | Room |
+| --- | --- | --- |
+
+
+**Friday, April 24**  
+
+| Time | Event | Room |
+| --- | --- | --- |
 
 ## Venue 
 

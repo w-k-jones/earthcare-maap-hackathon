@@ -48,7 +48,11 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 | --- | --- | --- |
 
 ## Venue 
+ESRIN is located in Frascati, a small town 20 km south of Rome in Italy.
 
+**Arriving by air** 
+
+**Arriving by train**
 
 ## Contact Info: 
 

@@ -7,8 +7,8 @@ ESA's 2026 EarthCARE MAAP Hackathon, ...  The event, taking place from **April 2
 
 ## Science Plan 
 
-To minimze technical issues and spend as most time as possible for analysing data, please check out the starting point and read through the documentation carefully.
-Check out our Science and Hacking Plan for more details
+To minimze technical issues and spend as most time as possible for analysing data, please check out our getting started resources and read through the how2hack documentation carefully.
+
 
 
 ## Program 

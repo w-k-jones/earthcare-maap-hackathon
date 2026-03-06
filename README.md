@@ -5,6 +5,12 @@ https://eo4society.esa.int/event/esas-2026-earthcare-maap-hackathon/
 
 ESA's 2026 EarthCARE MAAP Hackathon, ...  The event, taking place from **April 20 to 24, 2026** at ESA's center for Earth Observation, ESRIN in Frascati (Italy) will ... 
 
+### Pre-hack online sessions: 
+
+- EarthCARE MAAP Hackathon Meet & Greet: March 12th from 12.00 – 13.30 UTC (13.00 – 14.30 CET)
+- EarthCARE Lecture: March 27th from 12.00 - 13.00 UTC (14.00 – 15.00 CEST)
+- MAAP Introduction & Setup Seminar: March 31st from 11.00 – 12.00 UTC (13.00 – 14.30 CET)
+
 ## Tech Plan 
 
 To minimze technical issues and spend as most time as possible for analysing data, please check out our getting started resources and read through the how2hack documentation carefully. The hackathon will make use of ESA’s MAAP (Multi-mission Algorithm and Analysis Platform), a collaborative JupyterLab environment. To ensure your account is ready for the online practical sessions and the hackathon please complete these steps as soon as possible:

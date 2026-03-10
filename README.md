@@ -83,25 +83,25 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 ## Venue 
 ESRIN [is located in Frascati](https://maps.app.goo.gl/kmLJc7NGpFhz9wzK7), a small town 20 km south of Rome in Italy. 
 
-**Arriving by car or taxi from one of Rome's airports** <br />
+### Arriving by car or taxi from one of Rome's airports <br />
 Official taxis located opposite the Arrival Halls are white vehicles and have a taximeter. If taking a taxi from one of Rome's airports, it is advisable to agree on the fare with the driver in advance. Tell the driver you wish to go to ESRIN, located at Largo Galileo Galilei 1, 00044 Frascati. The ESRIN Centre is in Frascati, near the Tor Vergata Train Station turning right or left from Via E. Fermi, in the "Area di Ricerca" (Research Area). <br />
 From Rome Leonardo da Vinci Fiumicino airport the distance is 44 km and approximate travel time 45' (in non-peak hours). <br />
 From Ciampino airport the distance is 17 km and travel time 20' (in non-peak hours).
 
-**Arriving by train**
+### Arriving by train
 Frascati is served by two different lines of the Italian Railway (Trenitalia). Trains for Frascati and Tor Vergata stations leave roughly at one hour intervals from Rome Termini central station.
 
-Destination: Frascati city centre <br />
+**Destination: Frascati city centre** <br />
 The train with final destination “Frascati” arrives directly in the Frascati city centre and is the most practical connection if you go to a hotel in the centre of Frascati. From Frascati centre it is possible to walk to ESRIN (a pleasant stroll of approximately 3km) or to use the ESRIN Shuttle bus departing from Piazza Marconi. The shuttle has limited capacity and it advisable to coordinate with the organisers if you intend to make use of it. One-way ticket price is around 2€ and can be purchased at vending machines or online. Travel time is 30'.
 
-Destination: Tor Vergata station near ESRIN <br />
+**Destination: Tor Vergata station near ESRIN** <br />
 The line for “Frosinone”, “Cassino”, "Roccasecca" or "Colleferro" destinations, with a stop in Tor Vergata station indicated on the platform display, is ideal if you want to go straight to ESRIN.  The station Tor Vergata is only 100 metres from the entrance gate of ESRIN. As the Tor Vergata station is far away from the Frascati city centre, you are not advised to take it if you want to go to your hotel in Frascati (it's a 3km steep uphill walk that should be avoided when carrying a suitcase). One-way ticket price is around 2€ and can be purchased at vending machines or online. Travel time is 25'.
 
-Destination Roma Termini from one of the airports: <br />
+**Destination Roma Termini from one of the airports** <br />
 From Fiumicino airport: Take the airport Leonardo Express train to Rome Termini station, route time 35', departing every 30 minutes, one-way ticket price is around 11€. <br />
 From Ciampino airport: Take a shuttle bus to the Ciampino train station. From Ciampino station, take the train to Roma Termini or the one to Tor Vergata for reaching ESRIN. <br />
 
-**Where to stay**
+### Where to stay
 
 Participants can decide to stay in Frascati, Ciampino, or Rome. 
 - Rome: has plenty of availability for any budget. Just make sure you are well connected to the central station (Roma Termini), from where you can easily get a train to Tor Vergata. 

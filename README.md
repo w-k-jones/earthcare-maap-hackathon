@@ -99,7 +99,7 @@ The line for “Frosinone”, “Cassino”, "Roccasecca" or "Colleferro" destin
 
 Destination Roma Termini from one of the airports: <br />
 From Fiumicino airport: Take the airport Leonardo Express train to Rome Termini station, route time 35', departing every 30 minutes, one-way ticket price is around 11€. <br />
-From Ciampino airport: Take a shuttle bus to the Ciampino train station. From Ciampino station, take the train to Tor Vergata. <br />
+From Ciampino airport: Take a shuttle bus to the Ciampino train station. From Ciampino station, take the train to Roma Termini or the one to Tor Vergata for reaching ESRIN. <br />
 
 **Where to stay**
 

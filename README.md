@@ -31,7 +31,7 @@ Important: When joining, please specify that you are participating in the EarthC
 
 The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Friday afternoon, April 24th. Lunch is self-organised, but you will have access to ESRIN's canteen daily between 12.00 and 14.00. Snacks and coffee can be bought at the bar, open from 08.00 to 16.30. On Monday evening there will be an Icebreaker Aperitivo at ESRIN and on Thursday evening the hackathon dinner in Frascati. During the week, it will also be possible to make a guided tour of the Multimedia Centre, including the Phi-Experience and the Heritage Archive (two slots are available, see schedule below).
 
-**Monday, April 20**  - Please arrive by **13:45** at ESRIN.
+**Monday, April 20**  - Please arrive at ESRIN by **13:45**.
 
 | Time | Event | Room |
 | --- | --- | --- |

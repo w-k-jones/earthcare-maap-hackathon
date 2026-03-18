@@ -36,15 +36,16 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 | Time | Event | Room |
 | --- | --- | --- |
 | from 12:30 | **Registration**<br>- Lunch (optional) |  |
-| 14:00 | **Opening Session**<br>- Welcome<br>- Logistics<br>- Group distribution | Magellan |
+| 14:00 | **Opening Session**<br>- Welcome<br>- Logistics<br>- Group distribution and presentations of hack plan | Magellan |
 | 17:00 | _Aperitivo_ | |
 
 **Tuesday, April 21**  
 
 | Time | Event | Room |
 | --- | --- | --- |
-| 09:00 | Hacking | Room A, Room C* |
-| 13:00 | _Lunch_ | Cantine |
+| 08:30 | Hacking | Room A, Room C* |
+| 11.00 | _Coffee break_ |  |
+| 13:15 | _Lunch_ | Cantine |
 | 14:00 – 14:45 | Phi-Experience (Group 1) | Building 11 |
 | 14:00 | Hacking | Room A, Room P, Room C* |
 |  | *Open End* | |
@@ -55,8 +56,10 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 
 | Time | Event | Room |
 | --- | --- | --- |
-| 09:00 | Hacking | Room C, Room P |
-| 13.00 | _Lunch_ | Cantine |
+| 08:30 | Hacking | Room C, Room P |
+| 11.00 | _Coffee break_ |  |
+| 13.15 | _Lunch_ | Cantine |
+| 14:00 | Climate Modelling Guest Lecture (R. Fievet) | xx |
 | 14:00 | Hacking | Room C, Room P |
 |  | *Open End* | |
 
@@ -64,7 +67,8 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 
 | Time | Event | Room |
 | --- | --- | --- |
-| 09:00 | Hacking | Room C, Room P |
+| 08:30 | Hacking | Room C, Room P |
+| 11.00 | _Coffee break_ |  |
 | 13.00 | _Lunch_ | Cantine |
 | 14.00 - 14.45 | Phi-Experience (Group 2) | Building 11 |
 | 14:00 | Hacking | Room C, Room P |
@@ -76,7 +80,8 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 | Time | Event | Room |
 | --- | --- | --- |
 | 09:00 | Hacking | Room A, Room C |
-| 12.30 | _Lunch_ | Cantine |
+| 11.00 | _Coffee break_ |  |
+| 13.15 | _Lunch_ | Cantine |
 | 14.00 | **Closing Session** | Magellan |
 |  | *End around 16.00* | |
 

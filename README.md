@@ -8,7 +8,7 @@ https://eo4society.esa.int/event/esas-2026-earthcare-maap-hackathon/
 ### Pre-hack online sessions: 
 
 - Hackathon Meet & Greet: March 12th from 12.00 – 13.30 UTC (13.00 – 14.30 CET)
-- EarthCARE Lecture: **March 27th from 12.00 - 13.00 UTC (13.00 – 14.00 CET)**
+- EarthCARE Lecture: **March 27th from 12.00 - 13.30 UTC (13.00 – 14.30 CET)**
 - MAAP Introduction & Setup Seminar: **March 31st from 11.00 – 12.00 UTC (13.00 – 14.30 CEST)**
 
 ## Tech Plan 
@@ -43,25 +43,24 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 
 | Time | Event | Room |
 | --- | --- | --- |
-| 08:30 | Hacking | Room A, Room C* |
-| 11.00 | _Coffee break_ |  |
+| 08:30 | Hacking | Big Hall |
+| 10:45 - 11:15 | _Coffee break_ |  |
 | 13:15 | _Lunch_ | Cantine |
 | 14:00 – 14:45 | Phi-Experience (Group 1) | Building 11 |
-| 14:00 | Hacking | Room A, Room P, Room C* |
-|  | *Open End* | |
+| 14:00 | Hacking | Big Hall |
+| 19:00 | _End_ |  |
 
-\* Room C is available from **09:00–13:00** and from **16:00 onwards**.
 
 **Wednesday, April 22**  
 
 | Time | Event | Room |
 | --- | --- | --- |
-| 08:30 | Hacking | Room C, Room P |
-| 11.00 | _Coffee break_ |  |
-| 13.15 | _Lunch_ | Cantine |
+| 08:30 | Hacking | Big Hall |
+| 10:45 - 11:15 | _Coffee break_ |  |
+| 13:15 | _Lunch_ | Cantine |
 | 14:00 | Climate Modelling Guest Lecture (R. Fievet) | xx |
-| 14:00 | Hacking | Room C, Room P |
-|  | *Open End* | |
+| 14:00 | Hacking | Big Hall |
+| 19:00 | _End_ |  |
 
 **Thursday, April 23**  
 

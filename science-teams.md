@@ -1,13 +1,33 @@
-# Lightning (Blanka) 
+# Science Teams
 
-# StCu 
+## Aerosol Cloud Interactions 
 
-# Aerosol-Cloud 1 
+Team members: Ardit, Konstantin, Yuki
 
-# Aerosol-Cloud 2 
+## Ash-SO2
 
-# Ashes and SO2 
+Team members: Camilo, ... 
 
-# Contrails (maybe two groups) 
+## Below Cloud Aerosol Interactions
 
-# Global Maps 
+Team members: Barath Krishna, ... 
+
+## Contrails 
+
+Team members: Vanessa, Sabrina, Pratik
+
+## Global Maps 
+
+Team members: Annabel, Masa, 
+
+## Lightning 
+
+Team members: Blanka, Gilberto, Anezka, Dimitra, Sophie, Will
+
+## StCu-Clouds
+
+Team members: Johanna, Jakub, ...
+
+
+
+

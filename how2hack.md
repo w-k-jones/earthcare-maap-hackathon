@@ -1,19 +1,13 @@
 # First steps - How to hack 
 
-## 1. Join the EarthCARE MAAP Collabortive Platform 
+## Join the EarthCARE MAAP Collabortive Platform  (EarthCARE MAAP) 
 
 More information about getting started with EarthCARE MAAP can be found in the [Getting Started with MAAP guide](https://github.com/smbrose/earthcare-maap-hackathon/blob/main/getting-started-maap.md).
 
-## 2. Log in 
+## GIT 
 
-## 3. Set up your python environment 
-
-## 4. Start your analysis
-<!-- TODO: Explain STAC catalog a bit -->
-
-We use ESA MAAP's STAC catalog to access the EarthCARE data. 
+Fork this repository, create a folder for your team and submit a pull rest at the end of this wekk. 
 
 
-More information about getting started with the EarthCARE mission and its data can be found in the [Getting Started with EarthCARE guide](https://github.com/smbrose/earthcare-maap-hackathon/blob/main/getting-started-earthcare.md).
 
 Enjoy! 

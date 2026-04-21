@@ -11,8 +11,12 @@ import fsspec
 from pathlib import Path
 import sys
 import os
+import pathlib
 
 from load_earthcare import process_earthcare_patch
+
+output_path = pathlib.Path("/home/jovyan/my-public-bucket/earthcare_patches")
+output_path.mkdir(exist_ok=True)
 
 # setup bucket access
 bucket = 's3://EarthCODE/'
@@ -41,7 +45,7 @@ def find_shifted_centre(center_lat, lat_track, std_dev, num_points):
     idx_peak = np.clip(idx_peak, half_points, len(lat_track) - half_points)
     return idx_peak
 
-for unique_id in gdf["unique_id"].unique()[1000:1010]:
+for unique_id in gdf["unique_id"].unique():
 
     row = gdf.loc[gdf["unique_id"] == unique_id].iloc[0]
     earthcare_id = row["earthcare_id"]
@@ -114,6 +118,7 @@ for unique_id in gdf["unique_id"].unique()[1000:1010]:
                     "simplified_convective_classification",
                 ]
             ),
+            save_path=output_path, 
         )
     except ValueError as e:
-        raise e 
+        pass

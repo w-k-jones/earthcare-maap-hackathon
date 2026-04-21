@@ -194,4 +194,6 @@ def process_earthcare_patch(
 
     save_name = f'earthcare_{cluster_id}.h5'
     patch_ds.to_netcdf(save_path/save_name, engine='h5netcdf')
+
+    del patch_ds
     

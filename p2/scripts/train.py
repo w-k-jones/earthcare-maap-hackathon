@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Iterable
+import os
 
+import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
 from torch.optim import Adam
@@ -30,6 +31,62 @@ def _prediction_to_target_shape(pred: torch.Tensor, y: torch.Tensor) -> torch.Te
         return pred.squeeze(2)
 
     raise ValueError(f"Output shape {tuple(pred.shape)} incompatible with target {tuple(y.shape)}")
+
+
+def _plot_fixed_prediction_target(
+    model: torch.nn.Module,
+    dataloader: DataLoader,
+    device: str,
+    sample_idx: int,
+    target_channel: int,
+    epoch_idx: int,
+    save_dir: str | None = None,
+    show: bool = True,
+) -> None:
+    dataset = dataloader.dataset
+    if len(dataset) == 0:
+        return
+
+    sample_idx = min(sample_idx, len(dataset) - 1)
+    sample = dataset[sample_idx]
+
+    x = sample["x"].unsqueeze(0).to(device)
+    y = sample["y"].unsqueeze(0).to(device)
+
+    model.eval()
+    with torch.no_grad():
+        pred = model(x)
+        pred = _prediction_to_target_shape(pred, y)
+
+    pred_1d = pred[0, target_channel].detach().cpu().numpy()
+    y_1d = y[0, target_channel].detach().cpu().numpy()
+
+    fig, ax = plt.subplots(figsize=(12, 4))
+    ax.plot(y_1d, label="target", linewidth=2.0)
+    ax.plot(pred_1d, label="prediction", linewidth=1.5)
+    ax.set_title(f"Prediction vs target | epoch {epoch_idx}")
+    ax.set_xlabel("along_track")
+    ax.set_ylabel(f"target channel {target_channel}")
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+
+    path = sample.get("path")
+    if path is not None:
+        fig.suptitle(os.path.basename(path), fontsize=10)
+
+    fig.tight_layout()
+
+    if save_dir is not None:
+        os.makedirs(save_dir, exist_ok=True)
+        fig.savefig(
+            os.path.join(save_dir, f"prediction_target_epoch_{epoch_idx:03d}.png"),
+            dpi=150,
+        )
+
+    if show:
+        plt.show()
+
+    plt.close(fig)
 
 
 def _run_epoch(
@@ -77,6 +134,12 @@ def train(
     lr: float = 1e-4,
     device: str | None = None,
     criterion: torch.nn.Module | None = None,
+    plot: bool = True,
+    plot_every: int = 1,
+    plot_sample_idx: int = 0,
+    plot_target_channel: int = 0,
+    plot_save_dir: str | None = None,
+    show_plot: bool = True,
     verbose: bool = True,
 ) -> dict[str, list[float]]:
     """
@@ -101,8 +164,21 @@ def train(
     criterion = criterion or torch.nn.MSELoss()
 
     history = {"train_loss": [], "val_loss": []}
+    plot_dataloader = train_dataloader
 
     for epoch in range(epochs):
+        if plot and plot_every > 0 and epoch % plot_every == 0:
+            _plot_fixed_prediction_target(
+                model=model,
+                dataloader=plot_dataloader,
+                device=device,
+                sample_idx=plot_sample_idx,
+                target_channel=plot_target_channel,
+                epoch_idx=epoch,
+                save_dir=plot_save_dir,
+                show=show_plot,
+            )
+
         train_loss = _run_epoch(model, train_dataloader, optimizer, criterion, device)
         history["train_loss"].append(train_loss)
 
@@ -124,6 +200,18 @@ def train(
                     train_loss,
                     val_loss,
                 )
+
+    if plot:
+        _plot_fixed_prediction_target(
+            model=model,
+            dataloader=plot_dataloader,
+            device=device,
+            sample_idx=plot_sample_idx,
+            target_channel=plot_target_channel,
+            epoch_idx=epochs,
+            save_dir=plot_save_dir,
+            show=show_plot,
+        )
 
     return history
 

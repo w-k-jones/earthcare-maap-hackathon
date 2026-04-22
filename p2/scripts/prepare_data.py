@@ -29,18 +29,23 @@ lightning_clusters = 'EC_lightning_clusters.parquet'
 
 gdf = gpd.read_parquet(
     f"{bucket}{prefix}{lightning_clusters}",
-    storage_options={ "anon": True, 
-                    "client_kwargs": {
-                        "endpoint_url": endpoint_url,
-                        "region_name": region_name
-                    }
+    storage_options={
+        "anon": True, 
+        "client_kwargs": {
+            "endpoint_url": endpoint_url,
+            "region_name": region_name,
+        },
     },
 )
 
-def find_shifted_centre(center_lat, lat_track, std_dev, num_points):
-    shift_lat_val = np.random.normal(scale = std_dev)
+def find_shifted_centre(center_lat, lat_track, std_dev, num_points, max_shift=1):
+    shift_lat_val = np.clip(
+        np.random.normal(scale = std_dev),
+        -max_shift,
+        max_shift,
+    )
     shifted_center = center_lat + shift_lat_val
-    idx_peak = np.argmin(abs(lat_track - shifted_center)) 
+    idx_peak = np.argmin(abs(lat_track - shifted_center))
     half_points = int(num_points/2)
     idx_peak = np.clip(idx_peak, half_points, len(lat_track) - half_points)
     return idx_peak
@@ -55,19 +60,19 @@ for unique_id in gdf["unique_id"].unique()[1047:]:
     cluster_id = row["cluster_id"]
     peak_lat = row["peak_lat"]
 
-
     selected_file_track = f'EC_track_lightning_{source}.parquet'
 
     gdf_track = gpd.read_parquet(
-    f"{bucket}{prefix}{selected_file_track}",
-    storage_options={ "anon": True, 
-                    "client_kwargs": {
-                        "endpoint_url": endpoint_url,
-                        "region_name": region_name
-                    }
-    },
-    # optional filtering
-    filters=[('earthcare_id', "==", earthcare_id)],
+        f"{bucket}{prefix}{selected_file_track}",
+        storage_options={
+            "anon": True, 
+            "client_kwargs": {
+                "endpoint_url": endpoint_url,
+                "region_name": region_name,
+            },
+        },
+        # optional filtering
+        filters=[('earthcare_id', "==", earthcare_id)],
     )
 
     gdf_sort = gdf_track.sort_values("time").reset_index().copy()
@@ -78,8 +83,10 @@ for unique_id in gdf["unique_id"].unique()[1047:]:
     nearest_point = gpd.GeoSeries.distance(total_lightning_counts, row.geometry).argmin()
     
     idx_peak = find_shifted_centre(row.geometry.y, total_lightning_counts.geometry.y, 1, 256)
+    start = idx_peak-128
+    end = start+256
     
-    lightning_patch = total_lightning_counts.iloc[idx_peak-128:idx_peak+127]
+    lightning_patch = total_lightning_counts.iloc[start, end]
 
     module_path = os.path.abspath(os.path.join('..'))
     if module_path not in sys.path:

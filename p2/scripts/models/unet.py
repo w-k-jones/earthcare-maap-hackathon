@@ -29,19 +29,23 @@ class UNet(nn.Module):
     def __init__(self, in_channels, out_channels=1):
         super().__init__()
         # Encoder
-        self.c1 = conv_block(in_channels, 256)
-        self.p1 = nn.MaxPool2d(2)
-        self.c2 = conv_block(256, 512)
-        self.p2 = nn.MaxPool2d(2)
+        self.c1 = conv_block(in_channels, 32)
+        self.p1 = nn.MaxPool2d(kernel_size=(2, 1))
+        self.c2 = conv_block(32, 64)
+        self.p2 = nn.MaxPool2d(kernel_size=(2, 1))
         # Bottleneck
-        self.b = conv_block(512, 1024)
+        self.b = conv_block(64, 128)
         # Decoder
-        self.up2 = nn.ConvTranspose2d(1024, 512, kernel_size=2, stride=2)
-        self.d2 = conv_block(1024, 512)
-        self.up1 = nn.ConvTranspose2d(512, 256, kernel_size=2, stride=2)
-        self.d1 = conv_block(512, 256)
+        self.up2 = nn.ConvTranspose2d(128, 64, kernel_size=(2, 1), stride=(2, 1))
+        self.d2 = conv_block(128, 64)
+        self.up1 = nn.ConvTranspose2d(64, 32,kernel_size=(2, 1), stride=(2, 1))
+        self.d1 = conv_block(64, 32)
         # Final
-        self.out_conv = nn.Conv2d(256, out_channels, kernel_size=1)
+        self.head = nn.Sequential(
+            nn.Conv1d(32, 32, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv1d(32, out_channels, kernel_size=1),
+        )
 
     def forward(self, x):
         c1 = self.c1(x)
@@ -55,5 +59,9 @@ class UNet(nn.Module):
         u1 = self.up1(d2)
         u1 = torch.cat([u1, c1], dim=1)
         d1 = self.d1(u1)
-        out = self.out_conv(d1)
+        
+        z = d1.mean(dim=2)        
+        out = self.head(z)        
+
         return out
+

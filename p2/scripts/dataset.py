@@ -89,3 +89,7 @@ class EarthCARELightningDataset(Dataset):
 
         except Exception as e:
             print(e)
+
+        finally:
+            if hasattr(ds, "close"):
+                ds.close()

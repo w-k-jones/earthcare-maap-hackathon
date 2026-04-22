@@ -50,7 +50,7 @@ def find_shifted_centre(center_lat, lat_track, std_dev, num_points, max_shift=1)
     idx_peak = np.clip(idx_peak, half_points, len(lat_track) - half_points)
     return idx_peak
 
-for unique_id in gdf["unique_id"].unique()[1047:]:
+for unique_id in gdf["unique_id"].unique():
 
     row = gdf.loc[gdf["unique_id"] == unique_id].iloc[0]
     earthcare_id = row["earthcare_id"]
@@ -86,7 +86,7 @@ for unique_id in gdf["unique_id"].unique()[1047:]:
     start = idx_peak-128
     end = start+256
     
-    lightning_patch = total_lightning_counts.iloc[start, end]
+    lightning_patch = total_lightning_counts.iloc[start:end]
 
     module_path = os.path.abspath(os.path.join('..'))
     if module_path not in sys.path:

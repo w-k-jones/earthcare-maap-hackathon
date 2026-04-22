@@ -41,8 +41,11 @@ class EarthCARELightningDataset(Dataset):
         da = ds[var]
         arr = da.transpose("height", "along_track").values.astype(np.float32)
 
-        arr = np.nan_to_num(arr, nan=self.fill_value)
-        arr = (arr - self.stats_dict[var]["mean"]) / self.stats_dict[var]["std"]
+        if var in ["simplified_convective_classification", "multiple_scattering_status"]:
+            arr = np.nan_to_num(arr, nan=-1)
+        else:
+            arr = np.nan_to_num(arr, nan=self.fill_value)
+            arr = (arr - self.stats_dict[var]["mean"]) / self.stats_dict[var]["std"]
 
         return arr
 

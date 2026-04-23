@@ -70,11 +70,11 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 | Time | Event | Room |
 | --- | --- | --- |
 | 08:45 | Shuttle bus from Frascati | |
-| 09:00 | Hacking | Building 15, Science Hub|
+| 09:00 | Hacking | Building 15, Science Hub (Group 1,2)|
 | 11.00 | _Coffee break_ |  |
 | 13.00/15 | _Lunch_ | Cantine |
 | 14.00 - 14.45 | Phi-Experience (Group 2) | Building 11 |
-| 14:00 | Hacking | Building 15, Science Hub |
+| 14:00 | Hacking | Building 15, Science Hub (Group 1,2) |
 | 18:45 | Shuttle bus #1 to Frascati | |
 | 19:15 | Shuttle bus #2 to Frascati | |
 | 19:30 | _Hackathon Dinner_ | 'Na Fojetta, Frascati |
@@ -85,7 +85,7 @@ The EarthCARE MAAP Hackathon will run from Monday afternoon, April 20th, to Frid
 | Time | Event | Room |
 | --- | --- | --- |
 | 08:45 | Shuttle bus from Frascati | |
-| 09:00 | Hacking | Building 15 |
+| 09:00 | Hacking | Building 15, Science Hub (Group 1,2) |
 | 11.00 | _Coffee break_ |  |
 | 13.00/15 | _Lunch_ | Cantine |
 | 14.00 | **Closing Session** <br>- Welcome (Saskia / Beniamino) <br>- StCu Clouds <br>- Lightning <br>- AshSo2 <br>- Contrails <br>- PACE matchup tool (Sean / Kirk)<br>- Global Maps <br>- Aerosol-Cloud Interactions<br>- Below-cloud Aerosoll <br>- EarthCARE Outlook (Loredana / Björn)  | Magellan |

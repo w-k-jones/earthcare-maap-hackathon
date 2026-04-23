@@ -1,11 +1,7 @@
 import xarray as xr
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader
-import lightning as L
-import random
-import json
-import os
+from torch.utils.data import Dataset
 
 def read_one_patch(file):
     return xr.open_dataset(file)
@@ -23,7 +19,8 @@ class EarthCARELightningDataset(Dataset):
         input_vars,
         target_vars,
         mean_std_dict=None,
-        fill_value = 0.0
+        fill_value=0.0,
+        target_log1p=False,
     ):
 
         self.filelist = filelist
@@ -31,6 +28,7 @@ class EarthCARELightningDataset(Dataset):
         self.target_vars = target_vars
         self.stats_dict = mean_std_dict
         self.fill_value = fill_value
+        self.target_log1p = target_log1p
 
     def __len__(self):
         return len(self.filelist)
@@ -56,6 +54,8 @@ class EarthCARELightningDataset(Dataset):
 
         arr = da.transpose("along_track").values.astype(np.float32)
         arr = np.nan_to_num(arr, nan=self.fill_value)
+        if self.target_log1p:
+            arr = np.log1p(np.clip(arr, a_min=0.0, a_max=None))
 
         return arr
 

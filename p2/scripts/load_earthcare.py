@@ -25,8 +25,9 @@ io_params = {
 catalog_url = 'https://catalog.maap.eo.esa.int/catalogue/'
 catalog = Client.open(catalog_url)
 EC_COLLECTION = ['EarthCAREL2Validated_MAAP']
-
-CREDENTIALS_FILE = (pathlib.Path.home() / "credentials.txt" ).resolve()   # Insert the .txt path
+EC_DATA_DIR = "/shared/home/ggoracci/Data/EarthCARE"
+CREDENTIALS_FILE = (pathlib.Path(EC_DATA_DIR) / "credentials.txt" ).resolve()   # Insert the .txt path
+#CREDENTIALS_FILE = (pathlib.Path.home() / "credentials.txt" ).resolve()   # Insert the .txt path
 
 def load_credentials(file_path=CREDENTIALS_FILE):
     """Read key-value pairs from a credentials file into a dictionary."""

@@ -1,12 +1,22 @@
-from lightning.pytorch import LightningDataModule
-from torch.utils.data import Dataset, DataLoader
-import lightning as L
-import os
+from torch.utils.data import DataLoader
+import json
 from pathlib import Path
 import random
 import xarray as xr
 import numpy as np
 from dataset import EarthCARELightningDataset
+
+
+def load_input_stats(stats_path):
+    with open(stats_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_input_stats(stats, stats_path):
+    stats_path = Path(stats_path)
+    stats_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(stats_path, "w", encoding="utf-8") as f:
+        json.dump(stats, f, indent=2)
 
 
 def compute_input_stats(filepaths, input_vars, output_path=None):
@@ -23,6 +33,8 @@ def compute_input_stats(filepaths, input_vars, output_path=None):
         ds = read_one_patch(file)
         try:
             for var in input_vars:
+                if var not in ds:
+                    raise KeyError(f"Missing variable {var!r} in file {file}")
                 arr = ds[var].values.astype(np.float32)
                 mask = np.isfinite(arr)
                 valids = arr[mask]
@@ -48,8 +60,8 @@ def compute_input_stats(filepaths, input_vars, output_path=None):
         values["counts"] = int(values["counts"])
         values["mean"] = float(values["mean"])
 
-    # with open(output_path, "w", encoding="utf-8") as f:
-    #     json.dump(output_dict, f, indent=2)
+    if output_path is not None:
+        save_input_stats(output_dict, output_path)
 
     return output_dict   
 
@@ -91,7 +103,19 @@ def random_split_dataset(
     return split_dict
 
 
-class EarthCARELightningDataModule(L.LightningDataModule):
+def save_splits(splits_dict, splits_path):
+    splits_path = Path(splits_path)
+    splits_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(splits_path, "w", encoding="utf-8") as f:
+        json.dump(splits_dict, f, indent=2)
+
+
+def load_splits(splits_path):
+    with open(splits_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+class EarthCARELightningDataModule:
     def __init__(
         self,
         data_dir: str,
@@ -102,19 +126,29 @@ class EarthCARELightningDataModule(L.LightningDataModule):
         pin_memory: bool = False,
         fill_value: float = 0.0,
         norm_with_train: bool = True,
+        target_log1p: bool = False,
+        split_seed: int = 42,
+        splits_path: str | None = None,
+        stats_path: str | None = None,
+        persistent_workers: bool = False,
     ):
-        super().__init__()
-        self.save_hyperparameters(logger=False)
-
         self.data_dir = data_dir
-        self.splits_dict = random_split_dataset(data_dir)
+        if splits_path is None:
+            self.splits_dict = random_split_dataset(data_dir, seed=split_seed)
+        else:
+            self.splits_dict = load_splits(splits_path)
         self.input_vars = input_vars
         self.target_vars = target_vars
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.pin_memory = pin_memory
         self.fill_value = fill_value
-        self.norm_with_train = norm_with_train           
+        self.norm_with_train = norm_with_train
+        self.target_log1p = target_log1p
+        self.split_seed = split_seed
+        self.splits_path = splits_path
+        self.stats_path = stats_path
+        self.persistent_workers = persistent_workers
             
 
         self.train_dataset = None
@@ -129,7 +163,11 @@ class EarthCARELightningDataModule(L.LightningDataModule):
         val_files = self.splits_dict["val"]
         test_files = self.splits_dict["test"]
 
-        if self.norm_with_train:
+        if self.stats_path is not None:
+            mean_std_dict_train = load_input_stats(self.stats_path)
+            mean_std_dict_val = mean_std_dict_train
+            mean_std_dict_test = mean_std_dict_train
+        elif self.norm_with_train:
             mean_std_dict_train = compute_input_stats(train_files, self.input_vars)
             mean_std_dict_val = mean_std_dict_train
             mean_std_dict_test = mean_std_dict_train
@@ -143,6 +181,8 @@ class EarthCARELightningDataModule(L.LightningDataModule):
             input_vars=self.input_vars,
             target_vars=self.target_vars,
             mean_std_dict=mean_std_dict_train,
+            fill_value=self.fill_value,
+            target_log1p=self.target_log1p,
         )
 
         self.val_dataset = EarthCARELightningDataset(
@@ -151,6 +191,7 @@ class EarthCARELightningDataModule(L.LightningDataModule):
             target_vars=self.target_vars,
             mean_std_dict=mean_std_dict_val,
             fill_value=self.fill_value,
+            target_log1p=self.target_log1p,
         )
 
         self.test_dataset = EarthCARELightningDataset(
@@ -159,6 +200,7 @@ class EarthCARELightningDataModule(L.LightningDataModule):
             target_vars=self.target_vars,
             mean_std_dict=mean_std_dict_test,
             fill_value=self.fill_value,
+            target_log1p=self.target_log1p,
         )
 
 
@@ -169,6 +211,7 @@ class EarthCARELightningDataModule(L.LightningDataModule):
             shuffle=True,
             num_workers=self.num_workers,
             pin_memory=self.pin_memory,
+            persistent_workers=self.persistent_workers and self.num_workers > 0,
         )
 
     def val_dataloader(self):
@@ -178,6 +221,7 @@ class EarthCARELightningDataModule(L.LightningDataModule):
             shuffle=False,
             num_workers=self.num_workers,
             pin_memory=self.pin_memory,
+            persistent_workers=self.persistent_workers and self.num_workers > 0,
         )
 
     def test_dataloader(self):
@@ -187,4 +231,5 @@ class EarthCARELightningDataModule(L.LightningDataModule):
             shuffle=False,
             num_workers=self.num_workers,
             pin_memory=self.pin_memory,
+            persistent_workers=self.persistent_workers and self.num_workers > 0,
         )

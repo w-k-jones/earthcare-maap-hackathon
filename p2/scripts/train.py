@@ -2,12 +2,47 @@ from __future__ import annotations
 
 import logging
 import os
+import time
 
 import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+
+
+class WeightedMSELoss(torch.nn.Module):
+    """
+    Point-wise weighted MSE for sparse targets.
+
+    Points with target > positive_threshold get weight 1 + positive_weight.
+    With log1p targets, positive_threshold=0 still identifies original counts > 0.
+    """
+
+    def __init__(
+        self,
+        positive_weight: float = 10.0,
+        positive_threshold: float = 0.0,
+        reduction: str = "mean",
+    ):
+        super().__init__()
+        if reduction not in {"mean", "sum", "none"}:
+            raise ValueError("reduction must be one of: 'mean', 'sum', 'none'")
+        self.positive_weight = positive_weight
+        self.positive_threshold = positive_threshold
+        self.reduction = reduction
+
+    def forward(self, pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        loss = (pred - target) ** 2
+        weights = 1.0 + self.positive_weight * (target > self.positive_threshold).to(loss.dtype)
+        loss = weights * loss
+
+        if self.reduction == "mean":
+            return loss.mean()
+        if self.reduction == "sum":
+            return loss.sum()
+        return loss
 
 
 def _prediction_to_target_shape(pred: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
@@ -60,13 +95,21 @@ def _plot_fixed_prediction_target(
 
     pred_1d = pred[0, target_channel].detach().cpu().numpy()
     y_1d = y[0, target_channel].detach().cpu().numpy()
+    if getattr(dataset, "target_log1p", False):
+        pred_1d = np.expm1(pred_1d)
+        y_1d = np.expm1(y_1d)
+        pred_1d = np.clip(pred_1d, a_min=0.0, a_max=None)
+        y_1d = np.clip(y_1d, a_min=0.0, a_max=None)
 
     fig, ax = plt.subplots(figsize=(12, 4))
     ax.plot(y_1d, label="target", linewidth=2.0)
     ax.plot(pred_1d, label="prediction", linewidth=1.5)
     ax.set_title(f"Prediction vs target | epoch {epoch_idx}")
     ax.set_xlabel("along_track")
-    ax.set_ylabel(f"target channel {target_channel}")
+    ylabel = f"target channel {target_channel}"
+    if getattr(dataset, "target_log1p", False):
+        ylabel += " (count scale)"
+    ax.set_ylabel(ylabel)
     ax.grid(True, alpha=0.3)
     ax.legend()
 
@@ -105,6 +148,12 @@ def _run_epoch(
     for batch in dataloader:
         x = batch["x"].to(device, non_blocking=True)
         y = batch["y"].to(device, non_blocking=True)
+        if n_batches == 0 and is_train:
+            print(
+                f"First train batch devices | x: {x.device} | y: {y.device} | "
+                f"model: {next(model.parameters()).device}",
+                flush=True,
+            )
 
         if is_train:
             optimizer.zero_grad(set_to_none=True)
@@ -150,15 +199,29 @@ def train(
         batch["y"] -> [B, C_out, along_track]
     """
     if datamodule is not None:
+        if verbose:
+            print("Loading dataset and computing normalization stats...", flush=True)
         datamodule.setup("fit")
         train_dataloader = datamodule.train_dataloader()
         val_dataloader = datamodule.val_dataloader()
+        if verbose:
+            train_size = len(datamodule.train_dataset) if datamodule.train_dataset is not None else 0
+            val_size = len(datamodule.val_dataset) if datamodule.val_dataset is not None else 0
+            test_size = len(datamodule.test_dataset) if datamodule.test_dataset is not None else 0
+            print(
+                "Dataset loaded | "
+                f"train: {train_size} | val: {val_size} | test: {test_size}",
+                flush=True,
+            )
 
     if train_dataloader is None:
         raise ValueError("Pass datamodule or train_dataloader.")
 
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    if verbose:
+        print(f"Training device: {device}", flush=True)
+        print(f"Model parameter device: {next(model.parameters()).device}", flush=True)
 
     optimizer = Adam(model.parameters(), lr=lr)
     criterion = criterion or torch.nn.MSELoss()
@@ -167,6 +230,8 @@ def train(
     plot_dataloader = train_dataloader
 
     for epoch in range(epochs):
+        epoch_start = time.time()
+
         if plot and plot_every > 0 and epoch % plot_every == 0:
             _plot_fixed_prediction_target(
                 model=model,
@@ -190,15 +255,21 @@ def train(
             val_loss = None
 
         if verbose:
+            elapsed = time.time() - epoch_start
             if val_loss is None:
-                logging.info("Epoch %d/%d | train_loss: %.6f", epoch + 1, epochs, train_loss)
+                print(
+                    f"Epoch {epoch + 1}/{epochs} | "
+                    f"train_loss: {train_loss:.6f} | "
+                    f"time: {elapsed:.1f}s",
+                    flush=True,
+                )
             else:
-                logging.info(
-                    "Epoch %d/%d | train_loss: %.6f | val_loss: %.6f",
-                    epoch + 1,
-                    epochs,
-                    train_loss,
-                    val_loss,
+                print(
+                    f"Epoch {epoch + 1}/{epochs} | "
+                    f"train_loss: {train_loss:.6f} | "
+                    f"val_loss: {val_loss:.6f} | "
+                    f"time: {elapsed:.1f}s",
+                    flush=True,
                 )
 
     if plot:

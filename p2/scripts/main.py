@@ -1,5 +1,5 @@
 """
-Run full EarthCARE lightning-count training with the UNetSkip model.
+Run full EarthCARE lightning-count training with the ProfileCNN model.
 
 This script trains on the configured patch directory, writes run artifacts under
 p2/runs/<run-name>/, and can optionally reuse precomputed split/statistics JSON
@@ -14,7 +14,6 @@ from pathlib import Path
 import torch
 
 from datamodule import EarthCARELightningDataModule
-from models.unetskip import UNetSkip
 from models.profile_cnn import ProfileCNN
 from train import train
 
@@ -30,6 +29,9 @@ parser.add_argument(
 parser.add_argument("--splits-path", default=None)
 parser.add_argument("--stats-path", default=None)
 parser.add_argument("--split-seed", type=int, default=42)
+parser.add_argument("--epochs", type=int, default=50)
+parser.add_argument("--batch-size", type=int, default=128)
+parser.add_argument("--num-workers", type=int, default=2)
 args = parser.parse_args()
 
 run_name = args.run_name or datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -83,8 +85,8 @@ dm = EarthCARELightningDataModule(
     data_dir=data_dir,
     input_vars=input_vars,
     target_vars=target_vars,
-    batch_size=128,
-    num_workers=4,
+    batch_size=args.batch_size,
+    num_workers=args.num_workers,
     pin_memory=torch.cuda.is_available(),
     fill_value=0.0,
     norm_with_train=True,
@@ -92,6 +94,7 @@ dm = EarthCARELightningDataModule(
     split_seed=args.split_seed,
     splits_path=args.splits_path,
     stats_path=args.stats_path,
+    persistent_workers=True,
 )
 model = ProfileCNN(
     in_channels=len(input_vars),
@@ -104,7 +107,7 @@ print("Starting Training")
 history = train(
     model=model,
     datamodule=dm,
-    epochs=20,
+    epochs=args.epochs,
     lr=1e-4,
     device=device,
     criterion=torch.nn.MSELoss(),

@@ -9,7 +9,7 @@ Run commands should be executed from this directory:
 1. Full training with main.py
 ----------------------------
 
-main.py runs the full training configuration using UNetSkip.
+main.py runs the full training configuration using ProfileCNN.
 It writes artifacts to:
 
   ../runs/<run-name>/
@@ -22,14 +22,28 @@ including:
 
 Basic run:
 
-  python main.py --run-name full_unetskip_run
+  python main.py --run-name full_profilecnn_run
 
 Run with precomputed split and normalization statistics:
 
   python main.py \
-    --run-name full_unetskip_cached \
+    --run-name full_profilecnn_cached \
     --splits-path ../dataset_metadata/split_seed257_train0.7_val0.2_test0.1.json \
-    --stats-path ../dataset_metadata/split_seed257_train0.7_val0.2_test0.1_train_input_stats.json
+    --stats-path ../dataset_analysis/analysis_seed257_train0.7_val0.2_test0.1.json
+
+Run a full 50-epoch training job in the background with nohup:
+
+  mkdir -p ../logs
+
+  nohup python -u main.py \
+    --run-name profilecnn_full_seed257_bs128_ep50 \
+    --split-seed 257 \
+    --splits-path ../dataset_metadata/split_seed257_train0.7_val0.2_test0.1.json \
+    --stats-path ../dataset_analysis/analysis_seed257_train0.7_val0.2_test0.1.json \
+    --epochs 50 \
+    --batch-size 128 \
+    --num-workers 2 \
+    > ../logs/profilecnn_full_seed257_bs128_ep50.log 2>&1 &
 
 
 2. Subset ProfileCNN training
@@ -55,7 +69,7 @@ Run with precomputed split and normalization statistics:
   python run_subset_profile_cnn.py \
     --run-name profile_subset_cached \
     --splits-path ../dataset_metadata/split_seed257_train0.7_val0.2_test0.1.json \
-    --stats-path ../dataset_metadata/split_seed257_train0.7_val0.2_test0.1_train_input_stats.json \
+    --stats-path ../dataset_analysis/analysis_seed257_train0.7_val0.2_test0.1.json \
     --max-train-patches 1000 \
     --max-val-patches 200
 
@@ -83,6 +97,15 @@ This computes input and target statistics for the deterministic split:
 Outputs are written to:
 
   ../dataset_analysis/
+
+The JSON file in dataset_analysis can be used directly as --stats-path in the
+training scripts. The loader automatically extracts:
+
+  train_input_normalization_stats
+
+from:
+
+  ../dataset_analysis/analysis_seed257_train0.7_val0.2_test0.1.json
 
 
 Notes

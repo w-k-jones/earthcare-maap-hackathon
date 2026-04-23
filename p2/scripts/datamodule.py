@@ -1,4 +1,5 @@
 from torch.utils.data import DataLoader
+import csv
 import json
 from pathlib import Path
 import random
@@ -8,8 +9,31 @@ from dataset import EarthCARELightningDataset
 
 
 def load_input_stats(stats_path):
-    with open(stats_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    stats_path = Path(stats_path)
+    if stats_path.suffix == ".json":
+        with open(stats_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if "train_input_normalization_stats" in data:
+            return data["train_input_normalization_stats"]
+        return data
+
+    if stats_path.suffix == ".csv":
+        stats = {}
+        with open(stats_path, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row.get("split") != "train":
+                    continue
+                if row.get("group") != "input_raw":
+                    continue
+                variable = row["variable"]
+                stats[variable] = {
+                    "mean": float(row["mean"]),
+                    "std": max(float(row["std"]), 1e-6),
+                }
+        return stats
+
+    raise ValueError(f"Unsupported stats file format: {stats_path}")
 
 
 def save_input_stats(stats, stats_path):

@@ -1,0 +1,6 @@
+p2/runs/
+p2/logs/
+p2/dataset_analysis/
+p2/dataset_metadata/
+__pycache__/
+*.py[cod]
